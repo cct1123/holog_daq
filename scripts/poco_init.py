@@ -10,8 +10,8 @@ import time
 import casperfpga
 import numpy as np
 
-import fpga_daq
-import poco
+import holog_daq
+from holog_daq import fpga_daq,poco
 
 katcp_port = 7147
 # File to program the FPGA

@@ -9,7 +9,8 @@ February 2022
 
 import usb.core
 import numpy as np
-import synth
+import holog_daq
+from holog_daq import synth
 
 N = 18
 

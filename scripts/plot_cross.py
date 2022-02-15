@@ -18,9 +18,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
-import fpga_daq
-import poco
-import synth
+import holog_daq
+from holog_daq import fpga_daq,poco,synth
 import usb.core
 
 matplotlib.use("TkAgg")  # do this before importing pylab
