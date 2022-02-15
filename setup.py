@@ -21,7 +21,7 @@ def build_packages(base_dir, name_base):
                 [arr.append(rec) for rec in recursion]
     return arr
 
-packages = build_packages('holo_cmd')
+packages = build_packages('holog_daq/', 'holog_daq')
 
 setup(name='holog_daq',
       version=VERSION,
