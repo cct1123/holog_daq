@@ -2,6 +2,7 @@ import os
 from distutils.core import setup
 import pkg_resources
 import setuptools
+import pathlib
 
 VERSION = '0.1'
 
