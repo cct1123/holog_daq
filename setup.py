@@ -28,7 +28,7 @@ setup(name='holog_daq',
       description='Software for data acquisition of the holography setup.',
       author='Grace E. Chesmore, UChicago Lab',
       author_email='chesmore@uchicago.edu',
-      package_dir={'holo_cmd':'holo_cmd'},
+      package_dir={'holog_daq':'holog_daq'},
       packages=packages,
       scripts=['scripts/poco_init.py', 'scripts/synth_init.py', 'scripts/plot_cross.py'],
      )
