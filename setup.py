@@ -1,5 +1,7 @@
 import os
 from distutils.core import setup
+import pkg_resources
+import setuptools
 
 VERSION = '0.1'
 
@@ -32,3 +34,15 @@ setup(name='holog_daq',
       packages=packages,
       scripts=['scripts/poco_init.py', 'scripts/synth_init.py', 'scripts/plot_cross.py'],
      )
+
+
+with pathlib.Path('requirements.txt').open() as requirements_txt:
+    install_requires = [
+        str(requirement)
+        for requirement
+        in pkg_resources.parse_requirements(requirements_txt)
+    ]
+
+setuptools.setup(
+    install_requires=install_requires,
+)
