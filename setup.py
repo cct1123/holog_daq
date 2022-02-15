@@ -21,14 +21,14 @@ def build_packages(base_dir, name_base):
                 [arr.append(rec) for rec in recursion]
     return arr
 
-packages = build_packages('latrt-testing/', 'latrt_testing')
+packages = build_packages('holog_daq/', 'holo_cmd')
 
 setup(name='holog_daq',
       version=VERSION,
       description='Software for data acquisition of the holography setup.',
       author='Grace E. Chesmore, UChicago Lab',
       author_email='chesmore@uchicago.edu',
-      package_dir={'latrt_testing':'latrt-testing'},
+      package_dir={'holo_cmd':'holo_cmd'},
       packages=packages,
-      scripts=['scripts/make_file_psd_plot'],
+      scripts=['scripts/poco_init.py', 'scripts/synth_init.py', 'scripts/plot_cross.py'],
      )
