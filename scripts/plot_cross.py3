@@ -20,9 +20,9 @@ matplotlib.use("TkAgg")  # do this before importing pylab
 import matplotlib.pyplot as plt
 import numpy as np
 
-import synth3
-import poco3
-import fpga_daq3
+import holog_daq
+from holog_daq import fpga_daq3, poco3, synth3
+
 import usb.core
 import platform
 is_py3 = int(platform.python_version_tuple()[0]) == 3

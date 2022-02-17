@@ -14,9 +14,9 @@ import getpass
 #import matplotlib
 import sys
 import os
-import fpga_daq3
-import poco3
-print("newww")
+import holog_daq
+from holog_daq import fpga_daq3, poco3
+
 # check if you're in python 2 or 3
 import platform
 is_py3 = int(platform.python_version_tuple()[0]) == 3

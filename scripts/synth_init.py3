@@ -13,7 +13,8 @@ import numpy as np
 # from holog_daq import synth
 import sys
 import struct
-import synth3
+import holog_daq
+from holog_daq import synth3
 
 N = 18
 

@@ -23,9 +23,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import serial
 
-import fpga_daq3
-import poco3
-import synth3
+import holog_daq
+from holog_daq import fpga_daq3, poco3, synth3
+
 import usb.core
 import usb.util
 
