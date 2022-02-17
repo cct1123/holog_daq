@@ -33,7 +33,8 @@ setup(name='holog_daq',
       author_email='chesmore@uchicago.edu',
       package_dir={'holog_daq':'holog_daq'},
       packages=packages,
-      scripts=['scripts/poco_init.py', 'scripts/synth_init.py', 'scripts/plot_cross.py'],
+      scripts=['scripts/poco_init.py3', 'scripts/synth_init.py3', 
+        'scripts/plot_cross.py3', 'scripts/plot_cross_phase_no_quant3.py'],
      )
 
 
