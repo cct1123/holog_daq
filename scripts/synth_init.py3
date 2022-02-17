@@ -9,8 +9,11 @@ February 2022
 
 import usb.core
 import numpy as np
-import holog_daq
-from holog_daq import synth
+# import holog_daq
+# from holog_daq import synth
+import sys
+import struct
+import synth3
 
 N = 18
 
@@ -40,6 +43,6 @@ while ii < np.size(LOs):
 
 # Set the frequency of the RF output, in MHz. (device, state).
 # You must have the device's RF output in state (1) before doing this.
-synth.set_RF_output(0, 0, LOs)  # Turn on the RF output. (device,state)
-synth.set_RF_output(1, 0, LOs)
-synth.set_f(0, F, LOs)
+synth3.set_RF_output(0, 0, LOs)  # Turn on the RF output. (device,state)
+synth3.set_RF_output(1, 0, LOs)
+synth3.set_f(0, F, LOs)
