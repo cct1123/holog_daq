@@ -5,7 +5,7 @@ import setuptools
 import pathlib
 
 VERSION = '0.1'
-
+## TEST CHANGE
 def build_packages(base_dir, name_base):
     '''
     recusively find all the folders and treat them as packages
