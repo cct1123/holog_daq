@@ -7,11 +7,9 @@ February 2022
 
 """
 import struct
-
 import numpy as np
-
+import sys
 import usb.core
-
 
 class SynthOpt:
     ENDPOINT_DEC = 2  # , always. according to user manual.
@@ -20,7 +18,6 @@ class SynthOpt:
     IGNORE_PEAKS_BELOW = int(655)
     IGNORE_PEAKS_ABOVE = int(660)
     F_OFFSET = 10
-
 
 def set_RF_output(device, state, lo_id):
     '''
@@ -45,6 +42,38 @@ def set_RF_output(device, state, lo_id):
 
     lo_id[int(device)].write(SynthOpt.ENDPOINT_DEC, data)
 
+def set_f(device, freq, lo_id):
+    '''
+    Set frequency of synthesizers.
+    '''
+    # print('Setting frequency to '+str(f)+' MHz')
+    n_bytes = 6  # number of bytes remaining in the packet
+    n_command = 0x01  # the command number, such as '0x02' for RF output control.
+
+    if sys.version_info < (3,):  # Python 2?
+        def hexfmt(val):
+            return '0x{:02X}'.format(ord(val))
+
+    else:
+        def hexfmt(val):
+            return '0x{:02X}'.format(val)
+
+    bytes = [hexfmt(b) for b in struct.pack('>Q', int(freq * 1.0e6))]
+
+    data = bytearray(64)
+    data[0] = SynthOpt.ENDPOINT_HEX
+    data[1] = n_bytes
+    data[2] = n_command
+    i_start = 3
+
+    indx = 0
+    while indx < 5:
+        data[int(indx + i_start)] = int(bytes[indx + i_start], 16)
+        # print(data[int(indx+i_start)])
+        indx = indx + 1
+
+    lo_id[int(device)].write(SynthOpt.ENDPOINT_DEC, data)
+
 
 def reset_RF(device, lo_id):
     '''
@@ -58,32 +87,6 @@ def reset_RF(device, lo_id):
     data[1] = n_bytes
     data[2] = n_command
     data[3] = 0x00  # state
-    lo_id[int(device)].write(SynthOpt.ENDPOINT_DEC, data)
-
-
-def set_f(device, freq, lo_id):
-    '''
-    Set frequency of synthesizers.
-    '''
-    # print('Setting frequency to '+str(f)+' MHz')
-    n_bytes = 6  # number of bytes remaining in the packet
-    n_command = 0x01  # the command number, such as '0x02' for RF output control.
-    bytes = [
-        hex(ord(b)) for b in struct.pack(">Q", (freq * 1.0e6))
-    ]  # Q is unsigned long long and has std size 8, we only ever use last 5 elements.
-
-    data = bytearray(64)
-    data[0] = SynthOpt.ENDPOINT_HEX
-    data[1] = n_bytes
-    data[2] = n_command
-    i_start = 3
-    # print('in set_f, bytes = :'+str(bytes))
-    indx = 0
-    while indx < 5:
-        data[int(indx + i_start)] = int(bytes[indx + i_start], 16)
-        # print(data[int(indx+i_start)])
-        indx = indx + 1
-
     lo_id[int(device)].write(SynthOpt.ENDPOINT_DEC, data)
 
 

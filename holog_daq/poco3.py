@@ -7,7 +7,6 @@ February 2022
 import sys
 import logging
 
-
 class DebugLogHandler(logging.Handler):
     """A logger for KATCP tests."""
 
@@ -49,3 +48,17 @@ class DebugLogHandler(logging.Handler):
                     print("%s: %s" % (i.name, i.msg))
                 else:
                     print("%s: %s" % (i.name, i.msg))
+
+def exit_fail(fpga):
+    print('FAILURE DETECTED. Log entries:\n',lh.printMessages())
+    try:
+        fpga.stop()
+    except: pass
+    raise
+    exit()
+
+def exit_clean(fpga):
+    try:
+        fpga.stop()
+    except: pass
+    exit()
