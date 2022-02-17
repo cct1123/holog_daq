@@ -48,7 +48,7 @@ f_max_MHz = f_clock_MHz / 4
 katcp_port = 7147
 N = 18
 F_OFFSET = 5  # 5*f_clock_MHz/500 #MHz
-F = int(195.0 * 1000.0 / N)  # MHz
+F = int(210.0 * 1000.0 / N)  # MHz
 
 
 def drawDataCallback(baseline):
