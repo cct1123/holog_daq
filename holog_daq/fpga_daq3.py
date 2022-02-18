@@ -17,7 +17,8 @@ import casperfpga
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-import synth3
+import holog_daq
+from holog_daq import synth3
 
 plt.style.use("ggplot")
 
