@@ -15,21 +15,23 @@ import struct
 import sys
 import time
 
-import casperfpga
 import matplotlib
+
+import casperfpga
+
 matplotlib.use("TkAgg")  # do this before importing pylab
+
+import platform
 
 import matplotlib.pyplot as plt
 import numpy as np
 import serial
+import usb.core
+import usb.util
 
 import holog_daq
 from holog_daq import fpga_daq3, poco3, synth3
 
-import usb.core
-import usb.util
-
-import platform
 is_py3 = int(platform.python_version_tuple()[0]) == 3
 
 # Added by Charlie 2019-11-04
@@ -48,7 +50,7 @@ f_max_MHz = f_clock_MHz / 4
 katcp_port = 7147
 N = 18
 F_OFFSET = 5  # 5*f_clock_MHz/500 #MHz
-F = int(210.0 * 1000.0 / N)  # MHz
+F = int(190.0 * 1000.0 / N)  # MHz
 
 
 def drawDataCallback(baseline):
@@ -209,13 +211,13 @@ def drawDataCallback(baseline):
 
 # START OF MAIN:
 fpga = None
-roach,opts,baseline = fpga_daq3.roach2_init()
+roach, opts, baseline = fpga_daq3.roach2_init()
 
 # START OF MAIN:
 if __name__ == "__main__":
 
     loggers = []
-    lh=poco3.DebugLogHandler()
+    lh = poco3.DebugLogHandler()
     logger = logging.getLogger(roach)
     logger.addHandler(lh)
     logger.setLevel(10)
@@ -224,17 +226,16 @@ if __name__ == "__main__":
 try:
     ########### Setting up ROACH Connection ##################
     ##########################################################
-    print('------------------------')
-    print('Programming FPGA with call to a python2 prog...')
+    print("------------------------")
+    print("Programming FPGA with call to a python2 prog...")
     if not opts.skip:
         # basically starting a whole new terminal and running this script
-        err = os.system('/opt/anaconda2/bin/python2 upload_fpga_py2.py')
-        assert(err==0)
+        err = os.system("/opt/anaconda2/bin/python2 upload_fpga_py2.py")
+        assert err == 0
     else:
-        print('Skipped.')
+        print("Skipped.")
 
-
-    print('Connecting to server %s ... '%(roach)),
+    print("Connecting to server %s ... " % (roach)),
     if is_py3:
         fpga = casperfpga.CasperFpga(roach)
     else:
@@ -242,13 +243,12 @@ try:
     time.sleep(1)
 
     if fpga.is_connected():
-        print('ok\n')
+        print("ok\n")
     else:
-        print('ERROR connecting to server %s.\n'%(roach))
+        print("ERROR connecting to server %s.\n" % (roach))
         poco3.exit_fail(fpga)
     ##########################################################
     ##########################################################
-
 
     ### #prepare synths ###
     LOs = tuple(usb.core.find(find_all=True, idVendor=0x10C4, idProduct=0x8468))
