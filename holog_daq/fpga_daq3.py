@@ -19,7 +19,6 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-import casperfpga
 import holog_daq
 from holog_daq import synth3
 
