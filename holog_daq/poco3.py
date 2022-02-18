@@ -4,8 +4,8 @@ Grace E. Chesmore
 February 2022
 """
 
-import sys
 import logging
+import sys
 
 
 class DebugLogHandler(logging.Handler):

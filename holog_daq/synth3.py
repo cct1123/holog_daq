@@ -7,8 +7,9 @@ February 2022
 
 """
 import struct
-import numpy as np
 import sys
+
+import numpy as np
 import usb.core
 
 

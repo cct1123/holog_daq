@@ -81,13 +81,11 @@ def drawDataCallback(baseline):
     valab = fpga_daq3.running_mean(np.abs(interleave_cross_a), l_mean)
 
     val_copy_i_eval = np.array(valab)
-    val_copy_i_eval[int(IGNORE_PEAKS_ABOVE):] = 0
+    val_copy_i_eval[int(IGNORE_PEAKS_ABOVE) :] = 0
     val_copy_i_eval[: int(IGNORE_PEAKS_BELOW)] = 0
 
-    matplotlib.pyplot.semilogy(
-        x_index, valaa, color="b", label="aa", alpha=0.5)
-    matplotlib.pyplot.semilogy(
-        x_index, valbb, color="r", label="bb", alpha=0.5)
+    matplotlib.pyplot.semilogy(x_index, valaa, color="b", label="aa", alpha=0.5)
+    matplotlib.pyplot.semilogy(x_index, valbb, color="r", label="bb", alpha=0.5)
     matplotlib.pyplot.semilogy(x_index, valab, color="g", label="cross")
     matplotlib.pyplot.legend()
 
@@ -240,8 +238,7 @@ try:
     ##########################################################
 
     ### #prepare synths ###
-    LOs = tuple(usb.core.find(find_all=True,
-                idVendor=0x10C4, idProduct=0x8468))
+    LOs = tuple(usb.core.find(find_all=True, idVendor=0x10C4, idProduct=0x8468))
     print("LO1 bus: %d, address: %d" % (LOs[0].bus, LOs[0].address))
     print("LO2 bus: %d, address: %d" % (LOs[1].bus, LOs[1].address))
 

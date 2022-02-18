@@ -1,45 +1,19 @@
+"""
+Initialize connection with ROACH2 FPGA and flush+re-start channels.
+"""
 # from __future__ import print_function
-
-import datetime
-import getpass
 import logging
 import os
+
 # check if you're in python 2 or 3
 import platform
-import struct
-# import matplotlib
-import sys
 import time
 
 import casperfpga
-import numpy
-import numpy as np
-import usb.core
-import usb.util
-
 import holog_daq
 from holog_daq import fpga_daq3, poco3
 
 is_py3 = int(platform.python_version_tuple()[0]) == 3
-
-steps_per_cm = 1574.80316
-
-now = datetime.datetime.now()
-today = str(now.day) + "-" + str(now.month) + "-" + str(now.year)
-
-N_MULT = 12
-NREP = 1
-L_MEAN = 1
-N_TO_AVG = 1
-N_CHANNELS = 21
-
-ENDPOINT_DEC = 2  # , always. according to syntonic user manual.
-ENDPOINT_HEX = 0x02
-
-F_CLOCK_MHZ = 500
-f_max_MHz = F_CLOCK_MHZ / 4
-KATCP_PORT = 7147
-
 
 fpga = None
 roach, opts, baseline = fpga_daq3.roach2_init()
@@ -60,7 +34,7 @@ try:
     else:
         print("Skipped.")
 
-    print("Connecting to server %s ... " % (roach)),
+    print("Connecting to server %s ... " % (roach))
     if is_py3:
         fpga = casperfpga.CasperFpga(roach)
     else:

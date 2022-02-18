@@ -7,17 +7,17 @@ Grace E. Chesmore, August 2021
 
 """
 
+import logging
 import struct
 import sys
 import time
+from optparse import OptionParser
+
+import casperfpga
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import synth3
-
-import logging
-import casperfpga
-from optparse import OptionParser
 
 plt.style.use("ggplot")
 

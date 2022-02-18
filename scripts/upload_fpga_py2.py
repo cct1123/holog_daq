@@ -1,12 +1,13 @@
 # !/usr/bin/env python
 from __future__ import print_function
-import casperfpga
-import time
-import sys
-import os
-import logging
 
+import logging
+import os
 import platform
+import sys
+import time
+
+import casperfpga
 
 assert int(platform.python_version_tuple()[0]) == 2
 

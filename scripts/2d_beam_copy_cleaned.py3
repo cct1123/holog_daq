@@ -12,9 +12,9 @@ import platform
 import time
 
 import casperfpga
-import numpy as np
 import holog_daq
-from holog_daq import synth3, poco3, fpga_daq3
+import numpy as np
+from holog_daq import fpga_daq3, poco3, synth3
 
 is_py3 = int(platform.python_version_tuple()[0]) == 3
 
@@ -85,8 +85,7 @@ def beam2d(fre, angle, step, label):
 
     print("nsamp = " + str(nsamp))
     STR_FILE_OUT = (
-        "Data/" + str(fre) + "GHz_" + str(angle) +
-        "deg_2D_" + label + today + ".txt"
+        "Data/" + str(fre) + "GHz_" + str(angle) + "deg_2D_" + label + today + ".txt"
     )
     arr2D_all_data = np.zeros(
         (nsamp, (4 * fpga_daq3.RoachOpt.N_CHANNELS + 7))

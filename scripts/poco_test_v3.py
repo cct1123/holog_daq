@@ -4,19 +4,20 @@ import datetime
 import getpass
 import logging
 import os
+
 # check if you're in python 2 or 3
 import platform
 import struct
+
 # import matplotlib
 import sys
 import time
 
+import casperfpga
 import numpy
 import numpy as np
 import usb.core
 import usb.util
-
-import casperfpga
 
 is_py3 = int(platform.python_version_tuple()[0]) == 3
 
@@ -84,7 +85,7 @@ today = str(now.day) + "-" + str(now.month) + "-" + str(now.year)
 
 
 def running_mean(x, N):
-    return numpy.convolve(x, numpy.ones((N,)) / N)[(N - 1):]
+    return numpy.convolve(x, numpy.ones((N,)) / N)[(N - 1) :]
 
 
 N_MULT = 12
@@ -186,22 +187,14 @@ def get_data(baseline):
     print("   Grabbing integration number %i" % acc_n)
 
     # get cross_correlation data...
-    a_0r = struct.unpack(">512l", fpga.read(
-        "dir_x0_%s_real" % baseline, 2048, 0))
-    a_1r = struct.unpack(">512l", fpga.read(
-        "dir_x1_%s_real" % baseline, 2048, 0))
-    a_0i = struct.unpack(">512l", fpga.read(
-        "dir_x0_%s_imag" % baseline, 2048, 0))
-    a_1i = struct.unpack(">512l", fpga.read(
-        "dir_x1_%s_imag" % baseline, 2048, 0))
-    b_0i = struct.unpack(">512l", fpga.read(
-        "dir_x0_%s_imag" % baseline, 2048, 0))
-    b_1i = struct.unpack(">512l", fpga.read(
-        "dir_x1_%s_imag" % baseline, 2048, 0))
-    b_0r = struct.unpack(">512l", fpga.read(
-        "dir_x0_%s_real" % baseline, 2048, 0))
-    b_1r = struct.unpack(">512l", fpga.read(
-        "dir_x1_%s_real" % baseline, 2048, 0))
+    a_0r = struct.unpack(">512l", fpga.read("dir_x0_%s_real" % baseline, 2048, 0))
+    a_1r = struct.unpack(">512l", fpga.read("dir_x1_%s_real" % baseline, 2048, 0))
+    a_0i = struct.unpack(">512l", fpga.read("dir_x0_%s_imag" % baseline, 2048, 0))
+    a_1i = struct.unpack(">512l", fpga.read("dir_x1_%s_imag" % baseline, 2048, 0))
+    b_0i = struct.unpack(">512l", fpga.read("dir_x0_%s_imag" % baseline, 2048, 0))
+    b_1i = struct.unpack(">512l", fpga.read("dir_x1_%s_imag" % baseline, 2048, 0))
+    b_0r = struct.unpack(">512l", fpga.read("dir_x0_%s_real" % baseline, 2048, 0))
+    b_1r = struct.unpack(">512l", fpga.read("dir_x1_%s_real" % baseline, 2048, 0))
     interleave_cross_a = []
     interleave_cross_b = []
 
@@ -220,8 +213,7 @@ def get_data(baseline):
         interleave_cross_a.append(complex(a_1r[i], a_1i[i]))
         # For phase, new, test.
         interleave_cross_b.append(complex(b_0r[i], b_0i[i]))
-        interleave_cross_b.append(
-            complex(b_1r[i], b_1i[i]))  # For phase, new, test
+        interleave_cross_b.append(complex(b_1r[i], b_1i[i]))  # For phase, new, test
 
         # auto
         interleave_auto_a.append(
@@ -249,30 +241,29 @@ def drawDataCallback(baseline):
         baseline
     )
     val = running_mean(numpy.abs(interleave_cross_a), L_MEAN)
-    val[int(IGNORE_PEAKS_ABOVE):] = 0
+    val[int(IGNORE_PEAKS_ABOVE) :] = 0
     val[: int(IGNORE_PEAKS_BELOW)] = 0
     arr_index_signal = numpy.argpartition(val, -2)[-2:]
     index_signal = arr_index_signal[1]
     # IS THIS NECESSARY? Probably not here, at least. freq = numpy.linspace(0,f_max_MHz,len(numpy.abs(interleave_cross_a)))
     arr_ab = numpy.abs(interleave_cross_a)
-    arr_phase = (180.0 / numpy.pi) * \
-        numpy.unwrap((numpy.angle(interleave_cross_b)))
+    arr_phase = (180.0 / numpy.pi) * numpy.unwrap((numpy.angle(interleave_cross_b)))
     phase_signal = arr_phase[index_signal]
     arr_aa = numpy.abs(interleave_auto_a)
     arr_bb = numpy.abs(interleave_auto_b)
 
     # Only record relevant channels, right around peak:
     arr_aa = arr_aa[
-        (index_signal - (N_CHANNELS // 2)): (1 + index_signal + (N_CHANNELS // 2))
+        (index_signal - (N_CHANNELS // 2)) : (1 + index_signal + (N_CHANNELS // 2))
     ]
     arr_bb = arr_bb[
-        (index_signal - (N_CHANNELS // 2)): (1 + index_signal + (N_CHANNELS // 2))
+        (index_signal - (N_CHANNELS // 2)) : (1 + index_signal + (N_CHANNELS // 2))
     ]
     arr_ab = arr_ab[
-        (index_signal - (N_CHANNELS // 2)): (1 + index_signal + (N_CHANNELS // 2))
+        (index_signal - (N_CHANNELS // 2)) : (1 + index_signal + (N_CHANNELS // 2))
     ]
     arr_phase = arr_phase[
-        (index_signal - (N_CHANNELS // 2)): (1 + index_signal + (N_CHANNELS // 2))
+        (index_signal - (N_CHANNELS // 2)) : (1 + index_signal + (N_CHANNELS // 2))
     ]
 
     return (
