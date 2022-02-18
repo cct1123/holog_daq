@@ -7,6 +7,12 @@ Modified: Tyrone van Balla, November 2015
 Modified: Grace E. Chesmore, February 2022
 """
 
+from holog_daq import fpga_daq3, poco3, synth3
+import holog_daq
+import usb.core
+import numpy as np
+import matplotlib.pyplot as plt
+import platform
 import array
 import logging
 import os
@@ -15,16 +21,12 @@ import time
 
 import casperfpga
 import matplotlib
+
 matplotlib.use("TkAgg")  # do this before importing pylab
+
 # matplotlib.use("Qt5Agg")
-import matplotlib.pyplot as plt
-import numpy as np
 
-import holog_daq
-from holog_daq import fpga_daq3, poco3, synth3
 
-import usb.core
-import platform
 is_py3 = int(platform.python_version_tuple()[0]) == 3
 
 # Added by Charlie 2019-11-04
@@ -79,11 +81,13 @@ def drawDataCallback(baseline):
     valab = fpga_daq3.running_mean(np.abs(interleave_cross_a), l_mean)
 
     val_copy_i_eval = np.array(valab)
-    val_copy_i_eval[int(IGNORE_PEAKS_ABOVE) :] = 0
+    val_copy_i_eval[int(IGNORE_PEAKS_ABOVE):] = 0
     val_copy_i_eval[: int(IGNORE_PEAKS_BELOW)] = 0
 
-    matplotlib.pyplot.semilogy(x_index, valaa, color="b", label="aa", alpha=0.5)
-    matplotlib.pyplot.semilogy(x_index, valbb, color="r", label="bb", alpha=0.5)
+    matplotlib.pyplot.semilogy(
+        x_index, valaa, color="b", label="aa", alpha=0.5)
+    matplotlib.pyplot.semilogy(
+        x_index, valbb, color="r", label="bb", alpha=0.5)
     matplotlib.pyplot.semilogy(x_index, valab, color="g", label="cross")
     matplotlib.pyplot.legend()
 
@@ -197,30 +201,30 @@ def drawDataCallback(baseline):
     plt.title("Integration number %i \n%s" % (acc_n, baseline))
     matplotlib.pyplot.show()
 
+
 # START OF MAIN:
 fpga = None
-roach,opts,baseline = fpga_daq3.roach2_init()
+roach, opts, baseline = fpga_daq3.roach2_init()
 
 try:
     loggers = []
-    lh=poco3.DebugLogHandler()
+    lh = poco3.DebugLogHandler()
     logger = logging.getLogger(roach)
     logger.addHandler(lh)
     logger.setLevel(10)
 
     ########### Setting up ROACH Connection ##################
     ##########################################################
-    print('------------------------')
-    print('Programming FPGA with call to a python2 prog...')
+    print("------------------------")
+    print("Programming FPGA with call to a python2 prog...")
     if not opts.skip:
         # basically starting a whole new terminal and running this script
-        err = os.system('/opt/anaconda2/bin/python2 upload_fpga_py2.py')
-        assert(err==0)
+        err = os.system("/opt/anaconda2/bin/python2 upload_fpga_py2.py")
+        assert err == 0
     else:
-        print('Skipped.')
+        print("Skipped.")
 
-
-    print('Connecting to server %s ... '%(roach)),
+    print("Connecting to server %s ... " % (roach)),
     if is_py3:
         fpga = casperfpga.CasperFpga(roach)
     else:
@@ -228,15 +232,16 @@ try:
     time.sleep(1)
 
     if fpga.is_connected():
-        print('ok\n')
+        print("ok\n")
     else:
-        print('ERROR connecting to server %s.\n'%(roach))
+        print("ERROR connecting to server %s.\n" % (roach))
         poco3.exit_fail(fpga)
     ##########################################################
     ##########################################################
 
     ### #prepare synths ###
-    LOs = tuple(usb.core.find(find_all=True, idVendor=0x10C4, idProduct=0x8468))
+    LOs = tuple(usb.core.find(find_all=True,
+                idVendor=0x10C4, idProduct=0x8468))
     print("LO1 bus: %d, address: %d" % (LOs[0].bus, LOs[0].address))
     print("LO2 bus: %d, address: %d" % (LOs[1].bus, LOs[1].address))
 
@@ -248,15 +253,16 @@ try:
     ii = 0
     while ii < np.size(LOs):
         LOs[ii].reset()
-        reattach = False  # Make sure the USB device is ready to receive commands.
+        # Make sure the USB device is ready to receive commands.
+        reattach = False
         if LOs[ii].is_kernel_driver_active(0):
             reattach = True
             LOs[ii].detach_kernel_driver(0)
         LOs[ii].set_configuration()
         ii = ii + 1
 
-# Set the frequency of the RF output, in MHz. (device, state).
-# You must have the device's RF output in state (1) before doing this.
+    # Set the frequency of the RF output, in MHz. (device, state).
+    # You must have the device's RF output in state (1) before doing this.
     synth3.set_RF_output(0, 1, LOs)  # Turn on the RF output. (device,state)
     synth3.set_RF_output(1, 1, LOs)
     synth3.set_f(0, F, LOs)

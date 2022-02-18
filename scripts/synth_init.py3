@@ -7,12 +7,14 @@ February 2022
 
 """
 
-import usb.core
-import numpy as np
+import struct
 # import holog_daq
 # from holog_daq import synth
 import sys
-import struct
+
+import numpy as np
+import usb.core
+
 import holog_daq
 from holog_daq import synth3
 

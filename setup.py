@@ -7,6 +7,7 @@ import setuptools
 
 VERSION = "0.1"
 
+
 def build_packages(base_dir, name_base):
     """
     recusively find all the folders and treat them as packages
@@ -57,6 +58,6 @@ setup(
 #     install_requires=install_requires,
 # )
 
-# Trick to installing on Field computer: 
+# Trick to installing on Field computer:
 # /opt/anaconda3/bin/pip3 install Desktop/test_package/holog_daq/
 # /opt/anaconda3/bin/pip3 uninstall holog_daq

@@ -1,22 +1,20 @@
 # !/usr/bin/env python
 from __future__ import print_function
+import casperfpga
+import time
+import sys
+import os
+import logging
 
 import platform
 
 assert int(platform.python_version_tuple()[0]) == 2
 
-import logging
-import os
-import sys
-import time
-
-import casperfpga
-
 
 def exit_fail(fpga, lh):
-    '''
+    """
     Returns fail and prints log entries.
-    '''
+    """
     print("FAILURE DETECTED. Log entries:\n", lh.printMessages())
     try:
         fpga.stop()
@@ -27,9 +25,9 @@ def exit_fail(fpga, lh):
 
 
 def exit_clean(fpga):
-    '''
+    """
     Stops FPGA function upon exiting.
-    '''
+    """
     try:
         fpga.stop()
     except:

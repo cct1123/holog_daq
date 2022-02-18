@@ -7,6 +7,14 @@ Modified: Tyrone van Balla, November 2015
 Modified: Grace E. Chesmore, October 2020
 """
 
+from holog_daq import fpga_daq3, poco3, synth3
+import holog_daq
+import usb.util
+import usb.core
+import serial
+import numpy as np
+import matplotlib.pyplot as plt
+import platform
 import array
 import datetime
 import logging
@@ -21,16 +29,6 @@ import casperfpga
 
 matplotlib.use("TkAgg")  # do this before importing pylab
 
-import platform
-
-import matplotlib.pyplot as plt
-import numpy as np
-import serial
-import usb.core
-import usb.util
-
-import holog_daq
-from holog_daq import fpga_daq3, poco3, synth3
 
 is_py3 = int(platform.python_version_tuple()[0]) == 3
 
@@ -89,11 +87,13 @@ def drawDataCallback(baseline):
     valab = fpga_daq3.running_mean(np.abs(interleave_cross_a), l_mean)
 
     val_copy_i_eval = np.array(valab)
-    val_copy_i_eval[int(IGNORE_PEAKS_ABOVE) :] = 0
+    val_copy_i_eval[int(IGNORE_PEAKS_ABOVE):] = 0
     val_copy_i_eval[: int(IGNORE_PEAKS_BELOW)] = 0
 
-    matplotlib.pyplot.semilogy(x_index, valaa, color="b", label="aa", alpha=0.5)
-    matplotlib.pyplot.semilogy(x_index, valbb, color="r", label="bb", alpha=0.5)
+    matplotlib.pyplot.semilogy(
+        x_index, valaa, color="b", label="aa", alpha=0.5)
+    matplotlib.pyplot.semilogy(
+        x_index, valbb, color="r", label="bb", alpha=0.5)
     matplotlib.pyplot.semilogy(x_index, valab, color="g", label="cross")
     matplotlib.pyplot.legend()
 
@@ -145,19 +145,22 @@ def drawDataCallback(baseline):
         )
         index_cross = (
             np.argmax(
-                (np.abs(interleave_cross_a))[IGNORE_PEAKS_BELOW:IGNORE_PEAKS_ABOVE]
+                (np.abs(interleave_cross_a))[
+                    IGNORE_PEAKS_BELOW:IGNORE_PEAKS_ABOVE]
             )
             + IGNORE_PEAKS_BELOW
         )
         index_AA = (
             np.argmax(
-                (np.abs(interleave_auto_a))[IGNORE_PEAKS_BELOW:IGNORE_PEAKS_ABOVE]
+                (np.abs(interleave_auto_a))[
+                    IGNORE_PEAKS_BELOW:IGNORE_PEAKS_ABOVE]
             )
             + IGNORE_PEAKS_BELOW
         )
         index_BB = (
             np.argmax(
-                (np.abs(interleave_auto_b))[IGNORE_PEAKS_BELOW:IGNORE_PEAKS_ABOVE]
+                (np.abs(interleave_auto_b))[
+                    IGNORE_PEAKS_BELOW:IGNORE_PEAKS_ABOVE]
             )
             + IGNORE_PEAKS_BELOW
         )
@@ -251,7 +254,8 @@ try:
     ##########################################################
 
     ### #prepare synths ###
-    LOs = tuple(usb.core.find(find_all=True, idVendor=0x10C4, idProduct=0x8468))
+    LOs = tuple(usb.core.find(find_all=True,
+                idVendor=0x10C4, idProduct=0x8468))
     print("LO1 bus: %d, address: %d" % (LOs[0].bus, LOs[0].address))
     print("LO2 bus: %d, address: %d" % (LOs[1].bus, LOs[1].address))
 
@@ -263,7 +267,8 @@ try:
     ii = 0
     while ii < np.size(LOs):
         LOs[ii].reset()
-        reattach = False  # Make sure the USB device is ready to receive commands.
+        # Make sure the USB device is ready to receive commands.
+        reattach = False
         if LOs[ii].is_kernel_driver_active(0):
             reattach = True
             LOs[ii].detach_kernel_driver(0)

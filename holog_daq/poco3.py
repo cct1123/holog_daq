@@ -4,8 +4,8 @@ Grace E. Chesmore
 February 2022
 """
 
-import logging
 import sys
+import logging
 
 
 class DebugLogHandler(logging.Handler):
@@ -51,8 +51,8 @@ class DebugLogHandler(logging.Handler):
                     print("%s: %s" % (i.name, i.msg))
 
 
-def exit_fail(fpga):
-    print("FAILURE DETECTED. Log entries:\n", lh.printMessages())
+def exit_fail(fpga, lh):
+    print('FAILURE DETECTED. Log entries:\n', lh.printMessages())
     try:
         fpga.stop()
     except:
