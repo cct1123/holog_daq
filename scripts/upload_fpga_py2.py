@@ -85,33 +85,40 @@ DEFAULT_ROACH = "192.168.4.20"
 if __name__ == "__main__":
     from optparse import OptionParser
 
-    p = OptionParser()
-    p.set_description(__doc__)
-    # here is where we can change integration time
-    p.add_option(
-        "-l",
-        "--acc_len",
-        dest="acc_len",
-        type="int",
-        default=0.5
-        * (2 ** 28)
-        // 2048,  # for low pass filter and amplifier this seems like a good value, though not tested with sig. gen. #	25 jan 2018: 0.01
-        help="Set the number of vectors to accumulate between dumps. default is 2*(2^28)/2048.",
-    )  # for roach full setup.
-    p.add_option(
-        "-f",
-        "--fpg",
-        dest="fpgfile",
-        type="str",
-        default=DEFAULT_FPG,
-        help="Specify the bof file to load",
-    )
-    p.add_option("--roach", default=DEFAULT_ROACH)
-    opts, args = p.parse_args(sys.argv[1:])
-    roach = opts.roach
+    # p = OptionParser()
+    # p.set_description(__doc__)
+    # # here is where we can change integration time
+    # p.add_option(
+    #     "-l",
+    #     "--acc_len",
+    #     dest="acc_len",
+    #     type="int",
+    #     default=0.5
+    #     * (2 ** 28)
+    #     // 2048,  # for low pass filter and amplifier this seems like a good value, though not tested with sig. gen. #	25 jan 2018: 0.01
+    #     help="Set the number of vectors to accumulate between dumps. default is 2*(2^28)/2048.",
+    # )  # for roach full setup.
+    # p.add_option(
+    #     "-f",
+    #     "--fpg",
+    #     dest="fpgfile",
+    #     type="str",
+    #     default=DEFAULT_FPG,
+    #     help="Specify the bof file to load",
+    # )
+    # p.add_option("--roach", default=DEFAULT_ROACH)
+    # opts, args = p.parse_args(sys.argv[1:])
+    # roach = opts.roach
 
-    if not os.path.exists(opts.fpgfile):
-        p.error("fpgfile does not exist: %s" % opts.fpgfile)
+    # if not os.path.exists(opts.fpgfile):
+    #     p.error("fpgfile does not exist: %s" % opts.fpgfile)
+
+# ADDED TO REMOVE OPTIONS PARSING
+roach = DEFAULT_ROACH
+fpgfile = DEFAULT_FPG
+acc_len = int(0.5
+        * (2 ** 28)
+        // 2048)
 
 try:
 
@@ -135,7 +142,8 @@ try:
     print("------------------------")
     print("Programming FPGA...")
     sys.stdout.flush()
-    fpga.upload_to_ram_and_program(opts.fpgfile)
+    # fpga.upload_to_ram_and_program(opts.fpgfile)
+    fpga.upload_to_ram_and_program(fpgfile)
     print(" ... now wait a bit")
     time.sleep(10)
     print("done")
@@ -145,7 +153,8 @@ try:
     print("done")
 
     print("Configuring accumulation period...")
-    fpga.write_int("acc_len", int(opts.acc_len))
+    # fpga.write_int("acc_len", int(opts.acc_len))
+    fpga.write_int("acc_len", int(acc_len))
 
     print("done")
 

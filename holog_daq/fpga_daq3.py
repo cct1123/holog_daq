@@ -135,27 +135,27 @@ def get_data(baseline, fpga):
 
 
 def roach2_init():
-    from optparse import OptionParser
-    p = OptionParser()
-    # p.set_usage('poco_init_no_quant.py')
-    p.set_description(__doc__)
-    p.add_option('-s', '--skip', dest='skip', action='store_true',
-                 help='Skip reprogramming the FPGA and configuring EQ.')
-    p.add_option('-l', '--acc_len', dest='acc_len', type='int', default=.5*(2**28)//2048,
-                 # for low pass filter and amplifier this seems like a good value, though not tested with sig. gen.
-                 # 25 jan 2018: 0.01
-                 help='Set the number of vectors to accumulate between dumps. default is 2*(2^28)/2048.')  # for roach full setup.
+    # from optparse import OptionParser
+    # p = OptionParser()
+    # # p.set_usage('poco_init_no_quant.py')
+    # p.set_description(__doc__)
+    # p.add_option('-s', '--skip', dest='skip', action='store_true',
+    #              help='Skip reprogramming the FPGA and configuring EQ.')
+    # p.add_option('-l', '--acc_len', dest='acc_len', type='int', default=.5*(2**28)//2048,
+    #              # for low pass filter and amplifier this seems like a good value, though not tested with sig. gen.
+    #              # 25 jan 2018: 0.01
+    #              help='Set the number of vectors to accumulate between dumps. default is 2*(2^28)/2048.')  # for roach full setup.
 
-    p.add_option('-c', '--cross', dest='cross', type='str', default='bd',
-                 help='Plot this cross correlation magnitude and phase. default: bd')
-    p.add_option('-g', '--gain', dest='gain', type='int', default=2,
-                 help='Set the digital gain (4bit quantisation scalar). default is 2.')
-    p.add_option('-f', '--fpg', dest='fpgfile', type='str', default='',
-                 help='Specify the bof file to load')
+    # p.add_option('-c', '--cross', dest='cross', type='str', default='bd',
+    #              help='Plot this cross correlation magnitude and phase. default: bd')
+    # p.add_option('-g', '--gain', dest='gain', type='int', default=2,
+    #              help='Set the digital gain (4bit quantisation scalar). default is 2.')
+    # p.add_option('-f', '--fpg', dest='fpgfile', type='str', default='',
+    #              help='Specify the bof file to load')
 
-    opts, args = p.parse_args(sys.argv[1:])
+    opts = [] #, args = p.parse_args(sys.argv[1:])
     roach = '192.168.4.20'
-    BIT_S = opts.cross
+    BIT_S = 'bd' #opts.cross
 
     return roach, opts, BIT_S
 
