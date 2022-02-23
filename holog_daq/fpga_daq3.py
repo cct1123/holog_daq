@@ -40,7 +40,7 @@ class RoachOpt:
 
     """
 
-    BITSTREAM = "t4_roach2_noquant_fftsat.fpg"
+    BITSTREAM = "/home/chesmore/Desktop/holog_daq/scripts/t4_roach2_noquant_fftsat.fpg"
 
     f_clock_MHz = 500
     f_max_MHz = f_clock_MHz / 4

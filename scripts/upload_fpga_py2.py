@@ -79,7 +79,7 @@ class DebugLogHandler(logging.Handler):
 
 
 katcp_port = 7147
-DEFAULT_FPG = "t4_roach2_noquant_fftsat.fpg"
+DEFAULT_FPG = "/home/chesmore/Desktop/holog_daq/scripts/t4_roach2_noquant_fftsat.fpg"
 DEFAULT_ROACH = "192.168.4.20"
 
 if __name__ == "__main__":
