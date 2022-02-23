@@ -86,7 +86,6 @@ if __name__ == "__main__":
     from optparse import OptionParser
 
     p = OptionParser()
-    p.set_usage("poco_init_no_quant.py")
     p.set_description(__doc__)
     # here is where we can change integration time
     p.add_option(

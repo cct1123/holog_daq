@@ -137,7 +137,7 @@ def get_data(baseline, fpga):
 def roach2_init():
     from optparse import OptionParser
     p = OptionParser()
-    p.set_usage('poco_init_no_quant.py')
+    # p.set_usage('poco_init_no_quant.py')
     p.set_description(__doc__)
     p.add_option('-s', '--skip', dest='skip', action='store_true',
                  help='Skip reprogramming the FPGA and configuring EQ.')
