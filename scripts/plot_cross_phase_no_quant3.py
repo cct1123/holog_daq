@@ -225,12 +225,12 @@ try:
     ##########################################################
     print("------------------------")
     print("Programming FPGA with call to a python2 prog...")
-    if not opts.skip:
+    # if not opts.skip:
         # basically starting a whole new terminal and running this script
-        err = os.system("/opt/anaconda2/bin/python2 upload_fpga_py2.py")
-        assert err == 0
-    else:
-        print("Skipped.")
+    err = os.system("/opt/anaconda2/bin/python2 upload_fpga_py2.py")
+    assert err == 0
+    # else:
+    #     print("Skipped.")
 
     print("Connecting to server %s ... " % (roach)),
     if is_py3:

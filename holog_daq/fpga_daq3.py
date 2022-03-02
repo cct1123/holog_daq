@@ -58,7 +58,6 @@ def get_data(baseline, fpga):
     Read out data from ROACH2 FPGA.
 
     """
-
     acc_n = fpga.read_uint("acc_num")
 
     # print('Grabbing integration number %i'%acc_n)
