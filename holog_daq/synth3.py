@@ -17,9 +17,11 @@ class SynthOpt:
     ENDPOINT_DEC = 2  # , always. according to user manual.
     ENDPOINT_HEX = 0x02
     # Change peak limits depending on desired bin of signal.
-    IGNORE_PEAKS_BELOW = int(655)
-    IGNORE_PEAKS_ABOVE = int(660)
-    F_OFFSET = 10
+    # IGNORE_PEAKS_BELOW = int(655)
+    # IGNORE_PEAKS_ABOVE = int(660)
+    IGNORE_PEAKS_BELOW = int(738)
+    IGNORE_PEAKS_ABOVE = int(740)
+    F_OFFSET = 5
 
 
 def set_RF_output(device, state, lo_id):
