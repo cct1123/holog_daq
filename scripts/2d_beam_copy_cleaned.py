@@ -37,16 +37,16 @@ def beam2d(fre, angle, step, label):
     now = datetime.datetime.now()
     today = str(now.day) + "-" + str(now.month) + "-" + str(now.year)
 
-    N_MULT = 18
+    N_MULT = 12
     F_START = int(fre * 1000.0 / N_MULT)  # in MHz
     F_STOP = F_START
-    SynthOpt.F_OFFSET = 5  # in MHz
+    SynthOpt.F_OFFSET = 10  # in MHz
     freq = F_STOP
 
-    # SynthOpt.IGNORE_PEAKS_BELOW = int(986)
-    # SynthOpt.IGNORE_PEAKS_ABOVE = int(990)
-    SynthOpt.IGNORE_PEAKS_BELOW = int(655)
-    SynthOpt.IGNORE_PEAKS_ABOVE = int(660)
+    SynthOpt.IGNORE_PEAKS_BELOW = int(986)
+    SynthOpt.IGNORE_PEAKS_ABOVE = int(990)
+    # SynthOpt.IGNORE_PEAKS_BELOW = int(655)
+    # SynthOpt.IGNORE_PEAKS_ABOVE = int(660)
 
     DELTA_T_USB_CMD = 0.5
     T_BETWEEN_DELTA_F = 0.5
@@ -213,12 +213,12 @@ def beam2d(fre, angle, step, label):
         ##########################################################
         print("------------------------")
         print("Programming FPGA with call to a python2 prog...")
-        if not opts.skip:
+        # if not opts.skip:
             # basically starting a whole new terminal and running this script
-            err = os.system("/opt/anaconda2/bin/python2 upload_fpga_py2.py")
-            assert err == 0
-        else:
-            print("Skipped.")
+        err = os.system("/opt/anaconda2/bin/python2 upload_fpga_py2.py")
+            # assert err == 0
+        # else:
+        #     print("Skipped.")
 
         print("Connecting to server %s ... " % (roach)),
         if is_py3:
@@ -270,9 +270,9 @@ def beam2d(fre, angle, step, label):
     return STR_FILE_OUT
 
 
-span = 1
+span = 3
 res = 1
-str_out = beam2d(190, span, res, "co_")
+str_out = beam2d(130, span, res, "co_")
 
 # stage_xy.disable()
 

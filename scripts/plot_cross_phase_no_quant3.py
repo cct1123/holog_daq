@@ -1,5 +1,5 @@
 """
-This script demonstrates grabbing data from a wideband Pocket correlator and plotting it using numpy/pylab. 
+This script demonstrates grabbing data from a wideband Pocket correlator and plotting it using numpy/pylab.
 Designed for use with TUT4 at the 2009 CASPER workshop.
 
 Author: Jason Manley, August 2009.
@@ -15,7 +15,6 @@ import platform
 import struct
 import sys
 import time
-
 import casperfpga
 import holog_daq
 import matplotlib
@@ -28,12 +27,11 @@ from holog_daq import fpga_daq3, poco3, synth3
 
 matplotlib.use("TkAgg")  # do this before importing pylab
 
-
 is_py3 = int(platform.python_version_tuple()[0]) == 3
 
 # Added by Charlie 2019-11-04
-ylim_lo = 5.0e3
-ylim_hi = 5.0e9
+ylim_lo = 5.0e5
+ylim_hi = 1.0e7
 
 xlim_lo = 500
 xlim_hi = 1000
@@ -45,9 +43,9 @@ bitstream = "t4_roach2_noquant_fftsat.fpg"
 f_clock_MHz = 500
 f_max_MHz = f_clock_MHz / 4
 katcp_port = 7147
-N = 18
-F_OFFSET = 5  # 5*f_clock_MHz/500 #MHz
-F = int(190.0 * 1000.0 / N)  # MHz
+N = 12
+F_OFFSET = 10  # 5*f_clock_MHz/500 #MHz
+F = int(130.0 * 1000.0 / N)  # MHz
 
 
 def drawDataCallback(baseline):
@@ -89,8 +87,8 @@ def drawDataCallback(baseline):
     val_copy_i_eval[int(IGNORE_PEAKS_ABOVE) :] = 0
     val_copy_i_eval[: int(IGNORE_PEAKS_BELOW)] = 0
 
-    matplotlib.pyplot.semilogy(x_index, valaa, color="b", label="aa", alpha=0.5)
-    matplotlib.pyplot.semilogy(x_index, valbb, color="r", label="bb", alpha=0.5)
+    # matplotlib.pyplot.semilogy(x_index, valaa, color="b", label="aa", alpha=0.5)
+    # matplotlib.pyplot.semilogy(x_index, valbb, color="r", label="bb", alpha=0.5)
     matplotlib.pyplot.semilogy(x_index, valab, color="g", label="cross")
     matplotlib.pyplot.legend()
 

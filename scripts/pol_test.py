@@ -14,7 +14,16 @@ from holog_daq import fpga_daq3, poco3, synth3
 
 is_py3 = int(platform.python_version_tuple()[0]) == 3 # True if running in python3
 SynthOpt = synth3.SynthOpt # Read in synthesizer settings
+fpga = None
+roach, opts, baseline = fpga_daq3.roach2_init() # initialize the FPGA settings
 
+if __name__ == "__main__":
+
+    loggers = []
+    lh = poco3.DebugLogHandler()
+    logger = logging.getLogger(roach)
+    logger.addHandler(lh)
+    logger.setLevel(10)
 def get_pol_data(fre, angle):
 	'''
 	Get the data from the FPGA for a given frequency and angle.
@@ -48,9 +57,9 @@ def get_pol_data(fre, angle):
 
 	arr2D_all_data = np.zeros(
 	(nsamp, (4 * fpga_daq3.RoachOpt.N_CHANNELS + 5))
-	)  
-	# where the 7 extra are f,x,y,phi,... 
-	# x_cur,y_cur, index_signal of peak cross power 
+	)
+	# where the 7 extra are f,x,y,phi,...
+	# x_cur,y_cur, index_signal of peak cross power
 	# in a single bin (where phase is to be measured)
 
 	def MakePolData(f, LOs, baseline, fpga):
@@ -78,7 +87,7 @@ def get_pol_data(fre, angle):
 		    + " angle: ("
 		    + str(int(angle))
 		    + ") degs"
-		) 
+		)
 
 		arr_aa, arr_bb, arr_ab, arr_phase, index_signal = fpga_daq3.TakeAvgData(
 		    baseline, fpga, SynthOpt
@@ -97,23 +106,13 @@ def get_pol_data(fre, angle):
 		) # save the data
 
 	# START OF MAIN:
-	fpga = None
-	roach, opts, baseline = fpga_daq3.roach2_init() # initialize the FPGA settings
-
-	if __name__ == "__main__":
-
-	    loggers = [] 
-	    lh = poco3.DebugLogHandler() 
-	    logger = logging.getLogger(roach) 
-	    logger.addHandler(lh) 
-	    logger.setLevel(10)
 
 	try:
 		########### Setting up ROACH Connection ###############################
 		print("------------------------")
 		print("Programming FPGA with call to a python2 prog...")
 		# basically starting a whole new terminal and running this script
-		err = os.system("/opt/anaconda2/bin/python2 upload_fpga_py2.py") # program the FPGA in Python2
+		# err = os.system("/opt/anaconda2/bin/python2 upload_fpga_py2.py") # program the FPGA in Python2
 
 		print("Connecting to server %s ... " % (roach)),
 		if is_py3:
@@ -123,7 +122,7 @@ def get_pol_data(fre, angle):
 		time.sleep(1) # wait for the connection to be made
 
 		if fpga.is_connected(): # check if the connection was made
-		    print("ok\n") 
+		    print("ok\n")
 		else:
 		    print("ERROR connecting to server %s.\n" % (roach)) # if not, print an error message
 		    poco3.exit_fail(fpga) # exit the program
@@ -133,10 +132,11 @@ def get_pol_data(fre, angle):
 		synth3.set_RF_output(0, 1, LOs) # turn on the RF output
 		synth3.set_RF_output(1, 1, LOs) # turn on the RF output
 
-		f_sample = F_START 
+		f_sample = F_START
 		print("Begining map where frequency = " + str(fre) + "GHz.")
-		time.sleep(T_BETWEEN_DELTA_F) 
+		time.sleep(T_BETWEEN_DELTA_F)
 		# Now is time to take a beam map
+
 		MakePolData(f_sample, LOs, baseline, fpga) # get the data
 		print("Beam Map Complete.")
 
@@ -152,6 +152,8 @@ def get_pol_data(fre, angle):
 		        + " points of all of following: aa, bb, ab, phase (deg.)"
 		    ),
 		) # save the data to txt file
+		print("Done with %d GHz" %F_START)
+		time.sleep(1)
 
 	except KeyboardInterrupt:
 	    poco3.exit_clean(fpga) # exit the program
@@ -160,6 +162,8 @@ def get_pol_data(fre, angle):
 
 	return STR_FILE_OUT # return the file name
 
-F_test = 150 # GHz
-angle_test = 0 # deg
-get_pol_data(F_test,angle_test) # get the data
+F_test = [130,135,140] # GHz
+angle_test = 190 # deg
+
+for ff in F_test:
+	out_file = get_pol_data(ff,angle_test) # get the data
