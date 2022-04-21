@@ -30,8 +30,8 @@ matplotlib.use("TkAgg")  # do this before importing pylab
 is_py3 = int(platform.python_version_tuple()[0]) == 3
 
 # Added by Charlie 2019-11-04
-ylim_lo = 5.0e5
-ylim_hi = 1.0e7
+ylim_lo = 5.0e3
+ylim_hi = 1.0e9
 
 xlim_lo = 500
 xlim_hi = 1000
@@ -45,7 +45,7 @@ f_max_MHz = f_clock_MHz / 4
 katcp_port = 7147
 N = 12
 F_OFFSET = 10  # 5*f_clock_MHz/500 #MHz
-F = int(130.0 * 1000.0 / N)  # MHz
+F = int(145.0 * 1000.0 / N)  # MHz
 
 
 def drawDataCallback(baseline):

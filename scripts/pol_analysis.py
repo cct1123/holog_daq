@@ -6,7 +6,8 @@ April 2022
 '''
 
 import numpy as np
-
+import matplotlib
+import matplotlib.pyplot as plt
 
 def running_mean(arr, n_mean):
     """
@@ -68,7 +69,45 @@ def import_pol_data(file, n_indiv):
     source = ss_arr / np.max(ss_arr)
     beam = es_arr ** 2 / source
 
-    return arr_phi, np.sqrt(beam)
+    return arr_phi, beam #power
 
-phi,beam = import_pol_data("../Data/pol_130GHz_170deg_20-4-2022.txt",5)
-print(phi,beam)
+# angles = [200,210,215,220,225,230,235,240,245,250,255,260,270,275,280,285,290,295,300,310,320,330,340,350,360,370]
+# angles = [200,210,215,220,225]+list(np.array([230,235,240,245,250,255,260,270,275,280,285,290,295,300,310,320,330,340,350,360,370])/2)
+angles = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350]
+# ang = [45,55, 65, 75, 225, 235, 245, 255, 265]
+# angles = angles + ang
+angles = list(np.arange(0, 360, 10))
+ang = [55, 65, 75, 85, 235, 245, 255, 265]
+angles = angles + ang
+beams = []
+
+###
+F_test = [145, 145,150,155,160,165,170] # GHz
+beams_f = np.zeros((len(F_test), len(angles)))
+for i, freq in enumerate(F_test):
+    beambeam = []
+    for j, ang in enumerate(angles):
+        phi, beam = import_pol_data(f"../Data/pol_{freq}GHz_"+str(ang)+"deg_21-4-2022.txt",5)
+        beambeam.append(beam)
+    beams_f[i] = np.array(beambeam)
+gridsize = int(np.sqrt((len(F_test)))+0.5)
+
+fig, ax = plt.subplots(gridsize, gridsize, figsize=(15, 15))
+for ib, b in enumerate(beams_f):
+    ax[ib//gridsize, int(np.mod(ib, gridsize))].plot(angles,np.array(b)/np.max(np.array(b)),'.',color = 'r')
+    ax[ib//gridsize, int(np.mod(ib, gridsize))].set_title(f"frequency : {F_test[ib]} GHz")
+    ax[ib//gridsize, int(np.mod(ib, gridsize))].set_xlabel("Grid tilt [deg.]")
+    ax[ib//gridsize, int(np.mod(ib, gridsize))].set_yscale("log")
+plt.show()
+###
+#
+# for ang in angles:
+#
+#     phi,beam = import_pol_data("../Data/pol_150GHz_"+str(ang)+"deg_21-4-2022.txt",5)
+#     beams.append(beam)
+#
+# plt.plot(angles,np.array(beams)/np.max(np.array(beams)),'.',color = 'r')
+# plt.title("Polarization Response of Holography Receiver")
+# plt.xlabel("Grid tilt [deg.]")
+# plt.yscale("log")
+# plt.show()

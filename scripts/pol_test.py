@@ -24,6 +24,7 @@ if __name__ == "__main__":
     logger = logging.getLogger(roach)
     logger.addHandler(lh)
     logger.setLevel(10)
+
 def get_pol_data(fre, angle):
 	'''
 	Get the data from the FPGA for a given frequency and angle.
@@ -162,8 +163,8 @@ def get_pol_data(fre, angle):
 
 	return STR_FILE_OUT # return the file name
 
-F_test = [130,135,140] # GHz
-angle_test = 190 # deg
+F_test = [125,145,150,155,160,165,170] # GHz
+angle_test = 265 # deg
 
 for ff in F_test:
 	out_file = get_pol_data(ff,angle_test) # get the data
